@@ -23,11 +23,11 @@ project-name/
 │   └── ...
 ├── tests/
 │   └── ...
-├───.github/
-│   ├── PRD.md                # Product requirements
+├── .github/
 │   └── instructions/         # Instructions of best practices
-└── .vscode/
-    └── mcp.json              # Mcp servers
+├── .vscode/
+│   └── mcp.json              # Mcp servers
+└── PRD.md                    # Product requirements
 ```
 
 ## Commands
@@ -54,7 +54,7 @@ project-name/
 
 | Document | When to Read |
 |----------|--------------|
-| `.github/PRD.md` | Understanding requirements, features, API spec |
+| `PRD.md` | Understanding requirements, features, API spec |
 | `.github/instructions/...` | ... |
 
 ## Code Conventions
