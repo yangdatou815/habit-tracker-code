@@ -4,7 +4,7 @@ from collections.abc import Generator
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 
@@ -20,6 +20,13 @@ def db_session() -> Generator:
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
+
+    @event.listens_for(engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, connection_record) -> None:  # type: ignore[no-untyped-def]
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
     TestingSessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
     Base.metadata.create_all(bind=engine)

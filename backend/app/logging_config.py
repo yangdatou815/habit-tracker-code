@@ -3,8 +3,10 @@ from __future__ import annotations
 import logging
 import os
 import sys
+from typing import cast
 
 import structlog
+from structlog.typing import Processor
 
 from app.config import settings
 
@@ -20,7 +22,7 @@ def configure_logging(json_format: bool | None = None) -> None:
             or not sys.stderr.isatty()
         )
 
-    shared_processors = [
+    shared_processors: list[Processor] = [
         structlog.contextvars.merge_contextvars,
         structlog.processors.add_log_level,
         structlog.processors.TimeStamper(fmt="iso"),
@@ -28,7 +30,7 @@ def configure_logging(json_format: bool | None = None) -> None:
     ]
 
     if use_json:
-        processors = shared_processors + [
+        processors: list[Processor] = shared_processors + [
             structlog.processors.dict_tracebacks,
             structlog.processors.JSONRenderer(),
         ]
@@ -39,7 +41,7 @@ def configure_logging(json_format: bool | None = None) -> None:
         ]
 
     structlog.configure(
-        processors=processors,
+        processors=cast(list[Processor], processors),
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
         context_class=dict,
         logger_factory=structlog.PrintLoggerFactory(),

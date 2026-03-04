@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.habits.models import Habit
 from app.habits.schemas import HabitResponse
 from app.habits.service import list_habits
 
@@ -11,5 +12,5 @@ router = APIRouter(prefix="/habits", tags=["habits"])
 
 
 @router.get("", response_model=list[HabitResponse])
-def get_habits(db: Session = Depends(get_db)) -> list[HabitResponse]:
+def get_habits(db: Session = Depends(get_db)) -> list[Habit]:
     return list_habits(db)
