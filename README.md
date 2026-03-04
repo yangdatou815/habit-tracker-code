@@ -51,3 +51,19 @@ Skills for Github Copilot to assist with development workflows.
 | `/commit` | Create atomic commit with appropriate tag (feat, fix, docs, etc.) |
 | `/init-project` | Install dependencies and start development servers (customize this to your project) |
 | `/create-prd` | Generate Product Requirements Document from conversation |
+
+## Local Scaffold Commands
+
+```bash
+# Backend setup
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+
+# Frontend setup
+cd frontend
+npm install
+npm run dev
+```
