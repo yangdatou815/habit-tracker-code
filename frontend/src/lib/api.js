@@ -14,6 +14,15 @@ async function request(path, options = {}) {
     throw new Error(text || `Request failed with status ${response.status}`);
   }
 
+  if (response.status === 204) {
+    return null;
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    return null;
+  }
+
   return response.json();
 }
 

@@ -75,6 +75,25 @@ npm run build
 npm run test -- --run
 ```
 
+## Phase 2 Capabilities
+
+Implemented core Habit & Completion workflows:
+
+- Habit CRUD APIs and dashboard form/actions
+- Completion upsert (`done` / `not_done`) from dashboard toggle
+- Query-based refresh through TanStack Query invalidation
+- Backend integration tests for core API paths
+
+### Core API Endpoints
+
+- `GET /api/v1/habits`
+- `POST /api/v1/habits`
+- `GET /api/v1/habits/{habit_id}`
+- `PATCH /api/v1/habits/{habit_id}`
+- `DELETE /api/v1/habits/{habit_id}`
+- `PUT /api/v1/habits/{habit_id}/completions/{date}`
+- `GET /api/v1/habits/{habit_id}/completions?from=YYYY-MM-DD&to=YYYY-MM-DD`
+
 ## Workflow Commands
 
 - `/core-piv-loop-prime` — Load project context
