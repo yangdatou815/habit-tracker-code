@@ -6,5 +6,5 @@ node_modules
 .ruff_cache
 .vscode
 __pycache__
-backend/habits.db
+*.db
 frontend/dist
