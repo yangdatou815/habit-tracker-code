@@ -4,6 +4,7 @@
 node_modules
 .pytest_cache
 .ruff_cache
+.coverage
 .vscode
 __pycache__
 *.db
