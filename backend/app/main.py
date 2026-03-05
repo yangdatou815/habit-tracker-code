@@ -9,6 +9,7 @@ from app.config import settings
 from app.habits.router import router as habits_router
 from app.logging_config import configure_logging
 from app.middleware import LoggingMiddleware
+from app.stats.router import router as stats_router
 
 
 @asynccontextmanager
@@ -34,6 +35,7 @@ app.add_middleware(
 app.add_middleware(LoggingMiddleware)
 
 app.include_router(habits_router, prefix="/api/v1")
+app.include_router(stats_router, prefix="/api/v1")
 
 
 @app.get("/api/v1/health")

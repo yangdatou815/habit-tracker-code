@@ -5,6 +5,7 @@ import { Card } from "../../../components/ui/Card";
 import { useDeleteHabitMutation, useUpdateHabitMutation } from "../hooks/useHabits";
 import { CompletionToggle } from "./CompletionToggle";
 import { HabitForm } from "./HabitForm";
+import { WeeklyHeatmap } from "./WeeklyHeatmap";
 
 export function HabitCard({ habit }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -58,6 +59,8 @@ export function HabitCard({ habit }) {
           {habit.is_active ? "Active" : "Archived"}
         </span>
       </div>
+
+      <WeeklyHeatmap habitId={habit.id} targetDays={habit.target_days} />
 
       <div className="flex flex-wrap gap-2">
         <CompletionToggle habitId={habit.id} />

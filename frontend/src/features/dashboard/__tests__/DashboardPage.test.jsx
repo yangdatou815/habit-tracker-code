@@ -9,11 +9,16 @@ vi.mock("../../habits", () => ({
   useCreateHabitMutation: () => ({ mutateAsync: vi.fn() }),
 }));
 
+vi.mock("../components/DashboardSummary", () => ({
+  DashboardSummary: () => <div>Dashboard summary</div>,
+}));
+
 describe("DashboardPage", () => {
   it("renders dashboard heading", () => {
     render(<DashboardPage />);
 
     expect(screen.getByText(/Habit Tracker Dashboard/i)).toBeInTheDocument();
+    expect(screen.getByText(/Dashboard summary/i)).toBeInTheDocument();
     expect(screen.getByText(/Add habit/i)).toBeInTheDocument();
     expect(screen.getByText(/Habit form/i)).toBeInTheDocument();
     expect(screen.getByText(/Habit list/i)).toBeInTheDocument();
