@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+_DEFAULT_DB_URL = f"sqlite:///{_BACKEND_DIR / 'habits.db'}"
 
 
 class Settings(BaseSettings):
@@ -12,7 +16,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
 
-    DATABASE_URL: str = "sqlite:///./habits.db"
+    DATABASE_URL: str = _DEFAULT_DB_URL
     CORS_ORIGINS: list[str] = ["http://localhost:5173"]
     LOG_JSON: bool = False
 
