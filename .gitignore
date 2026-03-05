@@ -1,11 +1,23 @@
-.playwright-mcp
+# Environment & secrets
 .env
 .venv
-node_modules
+
+# Python caches
+__pycache__
 .pytest_cache
 .ruff_cache
 .coverage
-.vscode
-__pycache__
-*.db
+
+# Node
+node_modules
+
+# Build outputs
 frontend/dist
+frontend/coverage
+
+# Database
+*.db
+
+# IDE & tools
+.vscode
+.playwright-mcp
