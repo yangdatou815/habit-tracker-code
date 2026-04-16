@@ -18,7 +18,7 @@ export default function App() {
       </div>
 
       {/* iOS-style bottom tab bar */}
-      <nav className="ios-tabbar fixed bottom-0 left-0 right-0 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav className="ios-tabbar fixed bottom-0 left-0 right-0 z-50">
         <div className="max-w-lg mx-auto flex">
           {tabs.map(({ to, label, icon, iconActive }) => (
             <NavLink

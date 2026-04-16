@@ -78,7 +78,7 @@ def toggle_checkin(db: Session, project_id: int, checkin_date: date, status: str
     return checkin
 
 
-def _build_day_checkins(db: Session, target_date: date) -> list[TodayCheckinItem]:
+def _build_day_checkins(db: Session, target_date: date) -> List[TodayCheckinItem]:
     projects = (
         db.query(Project)
         .filter(Project.is_active == True)  # noqa: E712
@@ -122,7 +122,7 @@ def get_date_checkins(db: Session, target_date: date) -> DayCheckinSummary:
 
 def get_history(
     db: Session, from_date: date, to_date: date
-) -> list[HistoryDaySummary]:
+) -> List[HistoryDaySummary]:
     active_projects = (
         db.query(Project)
         .filter(Project.is_active == True)  # noqa: E712
