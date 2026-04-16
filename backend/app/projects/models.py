@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List
+
 from datetime import date, datetime
 
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, UniqueConstraint, func

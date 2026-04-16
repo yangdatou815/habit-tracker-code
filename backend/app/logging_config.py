@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import os
 import sys
-from typing import cast
+from typing import List, Optional, cast
 
 import structlog
 from structlog.typing import Processor
@@ -11,7 +11,7 @@ from structlog.typing import Processor
 from app.config import settings
 
 
-def configure_logging(json_format: bool | None = None) -> None:
+def configure_logging(json_format: Optional[bool] = None) -> None:
     use_json = settings.LOG_JSON
     if json_format is not None:
         use_json = json_format

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, List, Union
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     DATABASE_URL: str = _DEFAULT_DB_URL
-    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    CORS_ORIGINS: List[str] = ["http://localhost:5173"]
     LOG_JSON: bool = False
 
     model_config = SettingsConfigDict(
@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
-    def parse_cors_origins(cls, value: Any) -> list[str] | Any:
+    def parse_cors_origins(cls, value: Any) -> Union[List[str], Any]:
         if isinstance(value, str):
             value = value.strip()
             if not value:

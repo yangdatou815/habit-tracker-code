@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from datetime import date, datetime, timedelta, timezone
 
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
@@ -202,8 +204,8 @@ def list_completions_range(
     db: Session,
     *,
     habit_id: int,
-    from_date: date | None,
-    to_date: date | None,
+    from_date: Optional[date],
+    to_date: Optional[date],
 ) -> List[CompletionResponse]:
     if from_date is not None and to_date is not None and from_date > to_date:
         raise ValueError("from_date cannot be after to_date")

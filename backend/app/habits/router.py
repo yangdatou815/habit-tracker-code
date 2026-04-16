@@ -92,8 +92,8 @@ def put_completion_endpoint(
 
 @router.get("/{habit_id}/completions", response_model=CompletionListResponse)
 def get_completions_endpoint(
-    from_date: date | None = Query(default=None, alias="from"),
-    to_date: date | None = Query(default=None, alias="to"),
+    from_date: Optional[date] = Query(default=None, alias="from"),
+    to_date: Optional[date] = Query(default=None, alias="to"),
     habit: Habit = Depends(get_habit_or_404),
     db: Session = Depends(get_db),
 ) -> CompletionListResponse:

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -14,8 +16,8 @@ router = APIRouter(prefix="/stats", tags=["stats"])
 
 @router.get("/overview", response_model=StatsOverviewResponse)
 def get_stats_overview(
-    from_date: date | None = Query(default=None, alias="from"),
-    to_date: date | None = Query(default=None, alias="to"),
+    from_date: Optional[date] = Query(default=None, alias="from"),
+    to_date: Optional[date] = Query(default=None, alias="to"),
     db: Session = Depends(get_db),
 ) -> StatsOverviewResponse:
     today = datetime.now(timezone.utc).date()
