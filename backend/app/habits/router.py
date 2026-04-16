@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
@@ -30,11 +31,11 @@ from app.habits.service import (
 router = APIRouter(prefix="/habits", tags=["habits"])
 
 
-@router.get("", response_model=list[HabitResponse])
+@router.get("", response_model=List[HabitResponse])
 def get_habits(
-    is_active: bool | None = Query(default=None),
+    is_active: Optional[bool] = Query(default=None),
     db: Session = Depends(get_db),
-) -> list[HabitResponse]:
+) -> List[HabitResponse]:
     return list_habits(db, is_active=is_active)
 
 

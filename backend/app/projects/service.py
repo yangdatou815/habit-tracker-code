@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
@@ -15,7 +16,7 @@ from app.projects.schemas import (
 )
 
 
-def list_projects(db: Session, is_active: bool | None = None) -> list[ProjectResponse]:
+def list_projects(db: Session, is_active: Optional[bool] = None) -> List[ProjectResponse]:
     query = db.query(Project).order_by(Project.sort_order.asc(), Project.id.asc())
     if is_active is not None:
         query = query.filter(Project.is_active == is_active)

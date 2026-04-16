@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Literal
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -17,7 +17,7 @@ TARGET_DAY_ORDER = {
 }
 
 
-def normalize_target_days(target_days: list[str]) -> list[str]:
+def normalize_target_days(target_days: List[str]) -> List[str]:
     normalized = [day.strip().lower() for day in target_days]
     invalid_days = [day for day in normalized if day not in VALID_TARGET_DAYS]
     if invalid_days:
@@ -29,7 +29,7 @@ def normalize_target_days(target_days: list[str]) -> list[str]:
 
 class HabitBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
-    description: str | None = Field(default=None, max_length=255)
+    description: Optional[str] = Field(default=None, max_length=255)
 
     @field_validator("name")
     @classmethod
@@ -41,7 +41,7 @@ class HabitBase(BaseModel):
 
     @field_validator("description")
     @classmethod
-    def normalize_description(cls, value: str | None) -> str | None:
+    def normalize_description(cls, value: Optional[str]) -> Optional[str]:
         if value is None:
             return None
 
@@ -50,24 +50,24 @@ class HabitBase(BaseModel):
 
 
 class HabitCreate(HabitBase):
-    target_days: list[str] = Field(default_factory=list)
+    target_days: List[str] = Field(default_factory=list)
     is_active: bool = True
 
     @field_validator("target_days")
     @classmethod
-    def validate_target_days(cls, value: list[str]) -> list[str]:
+    def validate_target_days(cls, value: List[str]) -> List[str]:
         return normalize_target_days(value)
 
 
 class HabitUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    description: str | None = Field(default=None, max_length=255)
-    target_days: list[str] | None = None
-    is_active: bool | None = None
+    name: Optional[str] = Field(default=None, min_length=1, max_length=100)
+    description: Optional[str] = Field(default=None, max_length=255)
+    target_days: Optional[List[str]] = None
+    is_active: Optional[bool] = None
 
     @field_validator("name")
     @classmethod
-    def validate_name(cls, value: str | None) -> str | None:
+    def validate_name(cls, value: Optional[str]) -> Optional[str]:
         if value is None:
             return None
 
@@ -78,7 +78,7 @@ class HabitUpdate(BaseModel):
 
     @field_validator("description")
     @classmethod
-    def normalize_description(cls, value: str | None) -> str | None:
+    def normalize_description(cls, value: Optional[str]) -> Optional[str]:
         if value is None:
             return None
 
@@ -87,7 +87,7 @@ class HabitUpdate(BaseModel):
 
     @field_validator("target_days")
     @classmethod
-    def validate_target_days(cls, value: list[str] | None) -> list[str] | None:
+    def validate_target_days(cls, value: Optional[List[str]]) -> Optional[List[str]]:
         if value is None:
             return None
         return normalize_target_days(value)
@@ -97,7 +97,7 @@ class HabitResponse(HabitBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    target_days: list[str] = Field(default_factory=list)
+    target_days: List[str] = Field(default_factory=list)
     is_active: bool
     created_at: datetime
     current_streak: int = 0
@@ -116,7 +116,7 @@ class CompletionResponse(BaseModel):
 
 
 class HabitDetailResponse(HabitResponse):
-    completions: list[CompletionResponse] = Field(default_factory=list)
+    completions: List[CompletionResponse] = Field(default_factory=list)
 
 
 class CompletionUpsertRequest(BaseModel):
@@ -125,6 +125,6 @@ class CompletionUpsertRequest(BaseModel):
 
 class CompletionListResponse(BaseModel):
     habit_id: int
-    from_date: date | None = None
-    to_date: date | None = None
-    completions: list[CompletionResponse] = Field(default_factory=list)
+    from_date: Optional[date] = None
+    to_date: Optional[date] = None
+    completions: List[CompletionResponse] = Field(default_factory=list)

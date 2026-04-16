@@ -15,7 +15,7 @@ from app.habits.schemas import (
 )
 
 
-def _compute_streaks(completions: list[Completion]) -> tuple[int, int]:
+def _compute_streaks(completions: List[Completion]) -> Tuple[int, int]:
     done_dates = sorted(
         {
             completion.completed_date
@@ -46,7 +46,7 @@ def _compute_streaks(completions: list[Completion]) -> tuple[int, int]:
     return current_streak, longest_streak
 
 
-def _completion_rate(completions: list[Completion]) -> float:
+def _completion_rate(completions: List[Completion]) -> float:
     if not completions:
         return 0.0
 
@@ -54,7 +54,7 @@ def _completion_rate(completions: list[Completion]) -> float:
     return round((done_count / len(completions)) * 100, 2)
 
 
-def _serialize_target_days(habit: Habit) -> list[str]:
+def _serialize_target_days(habit: Habit) -> List[str]:
     order = {"mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "sun": 6}
     days = [target_day.day_of_week for target_day in habit.target_days]
     return sorted(days, key=lambda day: order.get(day, 99))
@@ -101,7 +101,7 @@ def _habit_query_with_relationships(db: Session):
     )
 
 
-def list_habits(db: Session, is_active: bool | None = None) -> list[HabitResponse]:
+def list_habits(db: Session, is_active: Optional[bool] = None) -> List[HabitResponse]:
     query = _habit_query_with_relationships(db).order_by(Habit.id.asc())
     if is_active is not None:
         query = query.filter(Habit.is_active == is_active)
@@ -204,7 +204,7 @@ def list_completions_range(
     habit_id: int,
     from_date: date | None,
     to_date: date | None,
-) -> list[CompletionResponse]:
+) -> List[CompletionResponse]:
     if from_date is not None and to_date is not None and from_date > to_date:
         raise ValueError("from_date cannot be after to_date")
 

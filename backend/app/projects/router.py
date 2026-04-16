@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
@@ -33,11 +34,11 @@ router = APIRouter(tags=["projects"])
 projects_router = APIRouter(prefix="/projects")
 
 
-@projects_router.get("", response_model=list[ProjectResponse])
+@projects_router.get("", response_model=List[ProjectResponse])
 def get_projects(
-    is_active: bool | None = Query(default=None),
+    is_active: Optional[bool] = Query(default=None),
     db: Session = Depends(get_db),
-) -> list[ProjectResponse]:
+) -> List[ProjectResponse]:
     return list_projects(db, is_active=is_active)
 
 
@@ -108,12 +109,12 @@ def date_checkins_endpoint(
     return get_date_checkins(db, target_date)
 
 
-@checkins_router.get("/history", response_model=list[HistoryDaySummary])
+@checkins_router.get("/history", response_model=List[HistoryDaySummary])
 def history_endpoint(
     from_date: date = Query(...),
     to_date: date = Query(...),
     db: Session = Depends(get_db),
-) -> list[HistoryDaySummary]:
+) -> List[HistoryDaySummary]:
     if from_date > to_date:
         raise HTTPException(status_code=422, detail="from_date must be <= to_date")
     return get_history(db, from_date, to_date)

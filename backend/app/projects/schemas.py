@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Literal
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -13,10 +13,10 @@ class ProjectCreate(BaseModel):
 
 
 class ProjectUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    category: str | None = Field(default=None, max_length=50)
-    sort_order: int | None = None
-    is_active: bool | None = None
+    name: Optional[str] = Field(default=None, min_length=1, max_length=100)
+    category: Optional[str] = Field(default=None, max_length=50)
+    sort_order: Optional[int] = None
+    is_active: Optional[bool] = None
 
 
 class ProjectResponse(BaseModel):
@@ -50,12 +50,12 @@ class TodayCheckinItem(BaseModel):
     category: str
     sort_order: int
     status: str  # "done" or "not_done"
-    checkin_id: int | None = None
+    checkin_id: Optional[int] = None
 
 
 class DayCheckinSummary(BaseModel):
     date: date
-    items: list[TodayCheckinItem]
+    items: List[TodayCheckinItem]
     total: int
     done_count: int
 
