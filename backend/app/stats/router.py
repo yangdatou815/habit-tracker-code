@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -18,7 +18,7 @@ def get_stats_overview(
     to_date: date | None = Query(default=None, alias="to"),
     db: Session = Depends(get_db),
 ) -> StatsOverviewResponse:
-    today = datetime.now(UTC).date()
+    today = datetime.now(timezone.utc).date()
 
     if from_date is None:
         from_date = today - timedelta(days=6)

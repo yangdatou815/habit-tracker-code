@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import structlog
 from sqlalchemy.orm import Session, selectinload
@@ -14,7 +14,7 @@ WEEKDAY_ABBREV = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 
 
 def _today() -> date:
-    return datetime.now(UTC).date()
+    return datetime.now(timezone.utc).date()
 
 
 def compute_stats_overview(

@@ -1,12 +1,13 @@
-# Habit Tracker MVP
+# Habit Tracker — 每日多项目打卡系统
 
-Habit Tracker is a full-stack web application focused on quick daily habit logging with immediate progress visibility.
+全栈 Web 应用，用于快速每日多项目打卡（修炼/锻炼），道教暗色主题 UI。
 
 ## Tech Stack
 
-- Backend: Python 3.12+, FastAPI, Pydantic v2, SQLAlchemy 2.x, Alembic, SQLite, structlog
-- Frontend: React 18+, Vite 5+, Tailwind CSS, TanStack Query
-- Testing: pytest, httpx, pytest-asyncio, Vitest, React Testing Library
+- Backend: Python 3.9+, FastAPI, Pydantic v2, SQLAlchemy 2.x, Alembic, SQLite, structlog
+- Frontend: React 18, Vite 5, Tailwind CSS 4, TanStack Query, react-router-dom
+- Testing: pytest, pytest-cov, httpx, Vitest
+- UI: 道教暗色主题（太极图、祥云纹、金色/翡翠配色）
 
 ## Project Structure
 
@@ -17,15 +18,19 @@ habit-tracker-code/
 │   │   ├── main.py
 │   │   ├── config.py
 │   │   ├── database.py
-│   │   ├── habits/
+│   │   ├── habits/          # V1 习惯追踪
+│   │   ├── projects/        # V2 打卡项目 + 打卡记录
 │   │   └── stats/
 │   ├── alembic/
 │   ├── tests/
+│   │   ├── integration/     # API 集成测试 + SCT 测试
+│   │   └── unit/
+│   ├── seed_projects.py     # 种子数据（11个默认项目）
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── features/
-│   │   ├── components/ui/
+│   │   ├── features/projects/  # API 客户端
+│   │   ├── pages/              # TodayPage, ProjectsPage
 │   │   └── lib/
 │   ├── package.json
 │   └── vite.config.js
@@ -42,10 +47,11 @@ habit-tracker-code/
 ```bash
 cd backend
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 alembic upgrade head
-uvicorn app.main:app --reload --port 8000
+python seed_projects.py          # 初始化11个默认项目
+uvicorn app.main:app --host 0.0.0.0 --port 8001
 ```
 
 ### Frontend
@@ -62,9 +68,11 @@ npm run dev
 
 ```bash
 cd backend
-.venv\Scripts\ruff check .
-.venv\Scripts\black --check .
-.venv\Scripts\pytest -q tests
+ruff check .
+black --check .
+pytest tests/ -q                                         # 全部测试
+pytest tests/ -m smoke -q                                # 冒烟测试
+pytest tests/ -q --cov=app --cov-report=term-missing --cov-fail-under=90  # 覆盖率门禁
 ```
 
 ### Frontend
@@ -74,6 +82,28 @@ cd frontend
 npm run build
 npm run test -- --run
 ```
+
+## DoD (Definition of Done) 质量门禁
+
+提交前必须通过：
+
+1. **覆盖率 >= 90%**: `pytest tests/ -q --cov=app --cov-fail-under=90`
+2. **SCT 映射**: 每个 US 至少 1 正常 + 3 异常测试（see `tests/integration/test_projects_sct.py`）
+3. **冒烟测试**: `pytest tests/ -m smoke -q`
+4. **前端构建**: `npm run build`
+
+详见 [PRD.md §10](PRD.md) 完整 DoD 定义。
+
+## V2 打卡项目
+
+默认 11 个打卡项目（分 4 类）：
+
+| 类别 | 项目 |
+|---|---|
+| 静功 | 打坐两小时 |
+| 柔韧 | 拉筋、风摆荷叶、迈毛 |
+| 动功 | 金刚功、蹲墙功、瑜伽、摇一摇 |
+| 养生 | 仙人揉腹、拍八虚、道具按摩 |
 
 ## Phase 2 Capabilities
 
@@ -93,6 +123,17 @@ Implemented core Habit & Completion workflows:
 - `DELETE /api/v1/habits/{habit_id}`
 - `PUT /api/v1/habits/{habit_id}/completions/{date}`
 - `GET /api/v1/habits/{habit_id}/completions?from=YYYY-MM-DD&to=YYYY-MM-DD`
+
+### V2 打卡 API
+
+- `GET /api/v1/projects` — 列出所有项目
+- `POST /api/v1/projects` — 创建新项目
+- `PATCH /api/v1/projects/{id}` — 编辑项目
+- `DELETE /api/v1/projects/{id}` — 删除项目
+- `PUT /api/v1/checkins/{project_id}/{date}` — 打卡/取消
+- `GET /api/v1/checkins/today` — 今日所有项目状态
+- `GET /api/v1/checkins/date/{date}` — 某日所有项目状态
+- `GET /api/v1/checkins/history?from_date=&to_date=` — 日期范围汇总
 
 ## Workflow Commands
 

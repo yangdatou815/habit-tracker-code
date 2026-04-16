@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base, get_db
 from app.main import app
 from app.habits import models as habits_models  # noqa: F401
+from app.projects import models as projects_models  # noqa: F401
 
 
 @pytest.fixture(scope="function")

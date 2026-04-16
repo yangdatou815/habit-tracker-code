@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import pytest
 
+
+@pytest.mark.smoke
 def test_health_endpoint(client) -> None:
     response = client.get("/api/v1/health")
 

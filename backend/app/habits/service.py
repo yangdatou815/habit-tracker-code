@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session, selectinload
@@ -35,7 +35,7 @@ def _compute_streaks(completions: list[Completion]) -> tuple[int, int]:
         else:
             current_run = 1
 
-    today = datetime.now(UTC).date()
+    today = datetime.now(timezone.utc).date()
     current_streak = 0
     cursor = today
     done_set = set(done_dates)

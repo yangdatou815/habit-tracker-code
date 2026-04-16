@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 
 def _create_habit(client, name: str = "Read", target_days: list[str] | None = None) -> int:
@@ -29,7 +29,7 @@ def test_stats_overview_empty(client) -> None:
 
 
 def test_stats_overview_with_data(client) -> None:
-    today = datetime.now(UTC).date().isoformat()
+    today = datetime.now(timezone.utc).date().isoformat()
 
     habit_id = _create_habit(client, "Exercise")
     client.put(
@@ -80,7 +80,7 @@ def test_stats_overview_defaults_to_7_day_range(client) -> None:
     assert response.status_code == 200
 
     payload = response.json()
-    today = datetime.now(UTC).date()
+    today = datetime.now(timezone.utc).date()
     expected_from = (today - timedelta(days=6)).isoformat()
     expected_to = today.isoformat()
 
